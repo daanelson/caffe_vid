@@ -6,12 +6,12 @@ layer{
     top: "label"
 
     # batching, 10 for now
-    input_param{
-        batch_size: 10
-        channels: 1
-        height: 300
-        width: 4096
-    }
+   memory_data_param{
+       batch_size: 10
+       channels: 1
+       height: 300
+       width: 4096
+   }
 }
 # input(10 * 1 * 300 * 4096)
 layer {

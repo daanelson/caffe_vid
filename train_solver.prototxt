@@ -1,4 +1,4 @@
-net: "model/train_net.prototxt"
+net: "train_net.prototxt"
 
 base_lr: 0.01
 lr_policy: "step"       # step down by factor of gamma every "stepsize" iterations
@@ -15,4 +15,4 @@ snapshot: 10000
 
 # change obvi depending on where you're running
 solver_mode: GPU
-snapshot_prefix: "model/saved/dannet"
+snapshot_prefix: "model/dannet"

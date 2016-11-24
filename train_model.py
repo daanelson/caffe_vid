@@ -15,7 +15,7 @@ split = 1
 
 net = caffe.Net(model_prototxt, caffe.TRAIN)
 
-solver = caffe.SGDsolver(model_solver)
+solver = caffe.SGDSolver(model_solver)
 
 # manually load data for now b/c why not
 counter = 0
@@ -28,6 +28,8 @@ train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_d
 # code to get train_data in the proper shape:
 train_data = np.array(train_data)
 train_data = train_data[:,np.newaxis,:,:]
+
+train_label = np.array(train_label)
 
 #TODO: will need to do this w/test data at some point
 
