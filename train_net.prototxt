@@ -9,11 +9,11 @@ layer{
     input_param{
         batch_size: 10
         channels: 1
-        height: 4096
-        width: 300
+        height: 300
+        width: 4096
     }
 }
-# input(10 * 1 * 4096 * 300)
+# input(10 * 1 * 300 * 4096)
 layer {
     name: "conv1"
     type: "Convolution"
@@ -22,8 +22,8 @@ layer {
     convolution_param {
         # num_output = number of filters
         num_output: 400
-        kernel_h: 4096
-        kernel_w: 7
+        kernel_h: 7
+        kernel_w: 4096
         stride_h: 1
         stride_w: 1
         weight_filler {
@@ -36,9 +36,9 @@ layer {
         }
     }
 }
-# output(n_batch * num_output * 1 * 300 - num_output)
-# presently(10 * 400 * 1 * 293)
-# in this layer, set kernel_w = 300 - [conv1]num_output
+# output(n_batch * num_output * 300 - num_output * 1)
+# presently(10 * 400 * 293 * 1)
+# in this layer, set kernel_h = 300 - [conv1]num_output
 layer {
     name: "pool1"
     type: "Pooling"
@@ -46,8 +46,8 @@ layer {
     top: "pool1"
     pooling_param {
         pool: MAX
-        kernel_h: 1
-        kernel_w: 293
+        kernel_h: 293
+        kernel_w: 1
         stride: 1
     }
 }
