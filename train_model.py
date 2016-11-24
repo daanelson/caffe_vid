@@ -27,9 +27,9 @@ train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_d
 
 # code to get train_data in the proper shape:
 train_data = np.array(train_data)
-train_data = train_data[:,np.newaxis,:,:]
+train_data = np.ascontiguousarray(train_data[:,np.newaxis,:,:])
 
-train_label = np.array(train_label)
+train_label = np.ascontiguousarray(train_label)
 
 #TODO: will need to do this w/test data at some point
 
