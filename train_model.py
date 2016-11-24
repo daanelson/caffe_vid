@@ -1,5 +1,6 @@
 import caffe
 import os
+import numpy as np
 import get_caffe_data
 
 caffe.set_mode_gpu()
@@ -24,6 +25,13 @@ print 'loading:'
 TRUNCATE_FOR_TESTING = 300
 train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_data_labels(train_list[:300], test_list[:300], h5_root)
 
+# code to get train_data in the proper shape:
+train_data = np.array(train_data)
+train_data = train_data[:,np.newaxis,:,:]
+
+#TODO: will need to do this w/test data at some point
+
+net.set_input_arrays(train_data, train_label)
 
 # solving:
 niter = 1000
@@ -33,14 +41,14 @@ batch_end = batch_size
 
 
 for it in range(niter):
-    solver.net.blobs['data'].data[:,:,:,:] = train_data[batch_start:batch_end]
-    solver.net.blobs['label'].data[:] = train_label[batch_start:batch_end]
+    # solver.net.blobs['data'].data[:,:,:,:] = train_data[batch_start:batch_end]
+    # solver.net.blobs['label'].data[:] = train_label[batch_start:batch_end]
     solver.step(1)
     print 'stepped'
 
     # manual batching like an asshole
-    batch_start = batch_end
-    batch_end = (batch_end + 100) % TRUNCATE_FOR_TESTING
-    if batch_end < batch_size:
-        batch_start = 0
-        batch_end = batch_size
+    # batch_start = batch_end
+    # batch_end = (batch_end + 100) % TRUNCATE_FOR_TESTING
+    # if batch_end < batch_size:
+    #     batch_start = 0
+    #     batch_end = batch_size

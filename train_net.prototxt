@@ -1,18 +1,16 @@
 layer{
     name: "input"
-    type: "Data"
+    type: "MemoryData"
     # note - this is I guess just a convention that the top layers are "data and label"
     top: "data"
     top: "label"
 
     # batching, 10 for now
     input_param{
-        shape{
-        dim: 10
-        dim: 1
-        dim: 4096
-        dim: 300
-        }
+        batch_size: 10
+        channels: 1
+        height: 4096
+        width: 300
     }
 }
 # input(10 * 1 * 4096 * 300)

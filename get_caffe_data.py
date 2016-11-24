@@ -3,6 +3,7 @@ import h5py
 import numpy as np
 import pickle
 import pdb
+import silly_counter
 from sklearn import svm
 
 
@@ -13,7 +14,8 @@ def get_train_test_lists(label_root, split):
     #Training Data
     with open(os.path.join(label_root,'trainlist0' + str(split) + '.txt'), 'rb') as f:
         wrong_path = [val.strip().split(' ') for val in f.readlines()]
-        train_list = np.random.shuffle([[x[0].split('.')[0] + '.h5', x[1]] for x in wrong_path])
+        train_list = [[x[0].split('.')[0] + '.h5', x[1]] for x in wrong_path]
+        np.random.shuffle(train_list)
 
     # Class dict to provide labels for test data
     with open(os.path.join(label_root,'classInd.txt'), 'rb') as f:
@@ -22,17 +24,17 @@ def get_train_test_lists(label_root, split):
 
     # Test Data
     with open(os.path.join(label_root, 'testlist0'+str(split) + '.txt'), 'rb') as f:
-        test_list = np.random.shuffle([[val.strip().split('.')[0] + '.h5', class_to_label[val.split('/')[0]]] for val in f.readlines()])
+        test_list = [[val.strip().split('.')[0] + '.h5', class_to_label[val.split('/')[0]]] for val in f.readlines()]
+        np.random.shuffle(test_list)
 
     return train_list, test_list
 
 
 # returning only one h5 file at a time,
 def load_h5_file(file_path):
-    global counter
-    counter += 1
-    if counter % 100 == 0:
-        print counter
+    silly_counter.count +=1
+    if silly_counter.count % 100 == 0:
+        print silly_counter.count
     try:
         with h5py.File(file_path, 'r') as f:
             data = f.get('data')
