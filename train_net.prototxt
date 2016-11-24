@@ -1,0 +1,91 @@
+layer{
+    name: "input"
+    type: "Data"
+    # note - this is I guess just a convention that the top layers are "data and label"
+    top: "data"
+    top: "label"
+
+    # batching, 10 for now
+    input_param{
+        shape{
+        dim: 10
+        dim: 1
+        dim: 4096
+        dim: 300
+        }
+    }
+}
+# input(10 * 1 * 4096 * 300)
+layer {
+    name: "conv1"
+    type: "Convolution"
+    bottom: "data"
+    top: "conv1"
+    convolution_param {
+        # num_output = number of filters
+        num_output: 400
+        kernel_h: 4096
+        kernel_w: 7
+        stride_h: 1
+        stride_w: 1
+        weight_filler {
+            type: "gaussian"
+            std: 0.02
+        }
+        bias_filler {
+            type: "gaussian"
+            std: 0.001
+        }
+    }
+}
+# output(n_batch * num_output * 1 * 300 - num_output)
+# presently(10 * 400 * 1 * 293)
+# in this layer, set kernel_w = 300 - [conv1]num_output
+layer {
+    name: "pool1"
+    type: "Pooling"
+    bottom: "conv1"
+    top: "pool1"
+    pooling_param {
+        pool: MAX
+        kernel_h: 1
+        kernel_w: 293
+        stride: 1
+    }
+}
+# output: (n_batch * num_output * 1 * 1)
+# presently: (10 * 400 * 1 * 1)
+layer {
+    name: "fc1"
+    type: "InnerProduct"
+    inner_product_param {
+        num_output: 400
+        weight_filler {
+            type: "gaussian"
+            std: 0.01
+        }
+        bias_filler {
+            type: "constant"
+            value: 0
+        }
+    }
+}
+# output: (n_batch * num_output * 1 * 1)
+# presently: (10 * 400 * 1 * 1)
+layer {
+    name: "accuracy"
+    type: "Accuracy"
+    bottom: "fc1"
+    bottom: "label"
+    top: "accuracy"
+    include {
+        phase: TEST
+    }
+}
+layer {
+    name: "softmax"
+    type: "SoftmaxWithLoss"
+    bottom: "fc1"
+    bottom: "label"
+    top: "softmax"
+}
