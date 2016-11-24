@@ -58,6 +58,8 @@ layer {
 layer {
     name: "fc1"
     type: "InnerProduct"
+    bottom: "pool1"
+    top: "fc1"
     inner_product_param {
         num_output: 400
         weight_filler {
