@@ -4,7 +4,7 @@ import get_caffe_data
 
 caffe.set_mode_gpu()
 caffe_root = '/work/04035/dnelson8/maverick/caffe'
-model_root = '/work/04035/dnelson8/maverick/vr_project/code/caffe_vid'
+model_root = '/work/04035/dnelson8/maverick/vr_project/caffe_vid'
 model_prototxt = os.path.join(model_root, 'train_net.prototxt')
 model_solver = os.path.join(model_root, 'train_solver.prototxt')
 
@@ -12,7 +12,7 @@ label_root = '/work/04035/dnelson8/maverick/vr_project/dataset/ucfTrainTestlist'
 h5_root = '/work/04035/dnelson8/maverick/vr_project/dataset/UCF-101-extract'
 split = 1
 
-net = caffe.net(model_prototxt, caffe.TRAIN)
+net = caffe.Net(model_prototxt, caffe.TRAIN)
 
 solver = caffe.SGDsolver(model_solver)
 
