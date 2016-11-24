@@ -54,27 +54,3 @@ def get_train_test_data_labels(train_list, test_list, h5_root):
     return train_data, train_label, test_data, test_label
 
 
-# Script!
-label_root = '/Volumes/usb_storage/ucfTrainTestlist'
-h5_root = '/Volumes/usb_storage/UCF-101-extract'
-
-scores = []
-
-for split in reversed(range(1,4)):
-    # global (I know, I know)
-    counter = 0
-
-    train_list, test_list = get_train_test_lists(label_root, split)
-    print 'loading:'
-    train_data, train_label, test_data, test_label = get_train_test_data_labels(train_list, test_list, h5_root)
-
-    print 'training:'
-    clf = svm.SVC()
-    clf.fit(train_data, train_label)
-    scores.append(clf.score(test_data, test_label))
-
-    print 'Split: ', split, ' Scores: ', scores
-
-print 'Mean Score: ', np.mean(scores)
-
-

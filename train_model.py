@@ -4,7 +4,7 @@ import get_caffe_data
 
 caffe.set_mode_gpu()
 caffe_root = '/work/04035/dnelson8/maverick/caffe'
-model_root = '/work/04035/dnelson8/maverick/vr_project/code/model'
+model_root = '/work/04035/dnelson8/maverick/vr_project/code/caffe_vid'
 model_prototxt = os.path.join(model_root, 'train_net.prototxt')
 model_solver = os.path.join(model_root, 'train_solver.prototxt')
 
@@ -37,7 +37,7 @@ for it in range(niter):
     solver.net.blobs['label'].data[:] = train_label[batch_start:batch_end]
     solver.step(1)
     print 'stepped'
-    
+
     # manual batching like an asshole
     batch_start = batch_end
     batch_end = (batch_end + 100) % TRUNCATE_FOR_TESTING
