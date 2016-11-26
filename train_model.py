@@ -33,14 +33,17 @@ train_data = np.ascontiguousarray(train_data[:,np.newaxis,:,:])
 
 train_label = np.ascontiguousarray(train_label, dtype=np.float32)
 
-solver.net.set_input_arrays(train_data, train_label)
+# Need copy of net for labels to be properly set as per: https://github.com/BVLC/caffe/issues/4131
+net_1 = solver.net
+net_1.set_input_arrays(train_data, train_label)
 
 # as per https://github.com/BVLC/caffe/pull/1196
 test_data = np.array(test_data, dtype=np.float32)
 test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
 test_label = np.ascontiguousarray(test_label, dtype=np.float32)
 
-solver.test_nets[0].set_input_arrays(test_data, test_label)
+net_2 = solver.test_nets[0]
+net_2.set_input_arrays(test_data, test_label)
 
 # solving:
 niter = 1000
