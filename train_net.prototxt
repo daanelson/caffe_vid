@@ -80,7 +80,7 @@ layer {
     bottom: "pool1"
     top: "fc1"
     inner_product_param {
-        num_output: 400
+        num_output: 101
         weight_filler {
             type: "gaussian"
             std: 0.01

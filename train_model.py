@@ -15,7 +15,7 @@ label_root = '/work/04035/dnelson8/maverick/vr_project/dataset/ucfTrainTestlist'
 h5_root = '/work/04035/dnelson8/maverick/vr_project/dataset/UCF-101-extract'
 split = 1
 
-net = caffe.Net(model_prototxt, caffe.TRAIN)
+#net = caffe.Net(model_prototxt, caffe.TRAIN)
 
 solver = caffe.SGDSolver(model_solver)
 
@@ -49,8 +49,8 @@ batch_size = 100
 batch_end = batch_size
 
 solver.solve()
-for it in range(niter):
+#for it in range(niter):
     # solver.net.blobs['data'].data[:,:,:,:] = train_data[batch_start:batch_end]
     # solver.net.blobs['label'].data[:] = train_label[batch_start:batch_end]
-    solver.step(1)
-    print 'stepped'
+    #solver.step(1)
+    #print 'stepped'
