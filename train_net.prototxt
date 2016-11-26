@@ -8,9 +8,9 @@ layer{
         phase: TRAIN
     }
 
-    # batching, 10 for now
+    # batching, 100 for now
    memory_data_param{
-       batch_size: 10
+       batch_size: 100
        channels: 1
        height: 300
        width: 4096
@@ -26,9 +26,9 @@ layer{
     include {
         phase: TEST
     }
-    # batching, 10 for now
+    # batching, 100 for now
    memory_data_param{
-       batch_size: 10
+       batch_size: 100
        channels: 1
        height: 300
        width: 4096
