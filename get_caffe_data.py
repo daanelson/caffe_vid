@@ -20,7 +20,7 @@ def get_train_test_lists(label_root, split):
     # Class dict to provide labels for test data
     with open(os.path.join(label_root,'classInd.txt'), 'rb') as f:
         class_list = [val.strip().split(' ') for val in f.readlines()]
-        class_to_label = {val[1]:val[0] for val in class_list}
+        class_to_label = {val[1]: val[0] for val in class_list}
 
     # Test Data
     with open(os.path.join(label_root, 'testlist0'+str(split) + '.txt'), 'rb') as f:
@@ -51,8 +51,8 @@ def get_train_test_data_labels(train_list, test_list, h5_root):
     train_data = [load_h5_file(os.path.join(h5_root, val[0])) for val in train_list]
     test_data = [load_h5_file(os.path.join(h5_root, val[0])) for val in test_list]
 
-    train_label = [val[1] for val in train_list]
-    test_label = [val[1] for val in test_list]
+    train_label = ['0' if val[1] == '101' else val[1] for val in train_list]
+    test_label = ['0' if val[1] == '101' else val[1] for val in test_list]
     return train_data, train_label, test_data, test_label
 
 
