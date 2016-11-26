@@ -4,7 +4,28 @@ layer{
     # note - this is I guess just a convention that the top layers are "data and label"
     top: "data"
     top: "label"
+    include {
+        phase: TRAIN
+    }
 
+    # batching, 10 for now
+   memory_data_param{
+       batch_size: 10
+       channels: 1
+       height: 300
+       width: 4096
+   }
+}
+
+layer{
+    name: "input"
+    type: "MemoryData"
+    # note - this is I guess just a convention that the top layers are "data and label"
+    top: "data"
+    top: "label"
+    include {
+        phase: TEST
+    }
     # batching, 10 for now
    memory_data_param{
        batch_size: 10
