@@ -7,11 +7,15 @@ stepsize: 100
 max_iter: 400
 momentum: 0.9
 
-# display every n iterations
-display: 1000
+# display every n iterations - 100 for testing
+display: 100
 
 # save a version of the model every "snapshot" iterations
 snapshot: 10000
+
+# test information - iter is num batches, interval is how often we test
+test_iter: 3
+test_interval: 100
 
 # change obvi depending on where you're running
 solver_mode: GPU

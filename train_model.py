@@ -33,9 +33,14 @@ train_data = np.ascontiguousarray(train_data[:,np.newaxis,:,:])
 
 train_label = np.ascontiguousarray(train_label, dtype=np.float32)
 
-#TODO: will need to do this w/test data at some point
-
 solver.net.set_input_arrays(train_data, train_label)
+
+# as per https://github.com/BVLC/caffe/pull/1196
+test_data = np.array(test_data, dtype=np.float32)
+test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
+test_label = np.ascontiguousarray(test_label, dtype=np.float32)
+
+solver.test_nets[0].set_input_arrays(test_data, test_label)
 
 # solving:
 niter = 1000
@@ -49,11 +54,3 @@ for it in range(niter):
     # solver.net.blobs['label'].data[:] = train_label[batch_start:batch_end]
     solver.step(1)
     print 'stepped'
-    
-
-    # manual batching like an asshole
-    # batch_start = batch_end
-    # batch_end = (batch_end + 100) % TRUNCATE_FOR_TESTING
-    # if batch_end < batch_size:
-    #     batch_start = 0
-    #     batch_end = batch_size
