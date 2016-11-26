@@ -3,6 +3,8 @@ import os
 import numpy as np
 import get_caffe_data
 
+#this may switch to CPU, unsure
+#caffe.set_device(0)
 caffe.set_mode_gpu()
 caffe_root = '/work/04035/dnelson8/maverick/caffe'
 model_root = '/work/04035/dnelson8/maverick/vr_project/caffe_vid'
@@ -26,14 +28,14 @@ TRUNCATE_FOR_TESTING = 300
 train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_data_labels(train_list[:300], test_list[:300], h5_root)
 
 # code to get train_data in the proper shape:
-train_data = np.array(train_data)
+train_data = np.array(train_data, dtype=np.float32)
 train_data = np.ascontiguousarray(train_data[:,np.newaxis,:,:])
 
-train_label = np.ascontiguousarray(train_label)
+train_label = np.ascontiguousarray(train_label, dtype=np.float32)
 
 #TODO: will need to do this w/test data at some point
 
-net.set_input_arrays(train_data, train_label)
+solver.net.set_input_arrays(train_data, train_label)
 
 # solving:
 niter = 1000
@@ -41,12 +43,13 @@ batch_start = 0
 batch_size = 100
 batch_end = batch_size
 
-
+solver.solve()
 for it in range(niter):
     # solver.net.blobs['data'].data[:,:,:,:] = train_data[batch_start:batch_end]
     # solver.net.blobs['label'].data[:] = train_label[batch_start:batch_end]
     solver.step(1)
     print 'stepped'
+    
 
     # manual batching like an asshole
     # batch_start = batch_end
