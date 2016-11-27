@@ -25,16 +25,17 @@ print 'loading:'
 TRUNCATE_FOR_TESTING = 300
 train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_data_labels(train_list[:9500], test_list[:3600], h5_root)
 
+print 'loaded:'
 # code to get train_data in the proper shape:
 train_data = np.array(train_data, dtype=np.float32)
 train_data = np.ascontiguousarray(train_data[:,np.newaxis,:,:])
 
 train_label = np.ascontiguousarray(train_label, dtype=np.float32)
-
+print 'train manipulated:'
 # Need copy of net for labels to be properly set as per: https://github.com/BVLC/caffe/issues/4131
 net_1 = solver.net
 net_1.set_input_arrays(train_data, train_label)
-
+print 'test manipulating:'
 # as per https://github.com/BVLC/caffe/pull/1196
 test_data = np.array(test_data, dtype=np.float32)
 test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
