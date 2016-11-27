@@ -2,6 +2,7 @@ import caffe
 import os
 import numpy as np
 import get_caffe_data
+import gc
 
 #this may switch to CPU, unsure
 #caffe.set_device(0)
@@ -35,12 +36,17 @@ print 'train manipulated:'
 # Need copy of net for labels to be properly set as per: https://github.com/BVLC/caffe/issues/4131
 net_1 = solver.net
 net_1.set_input_arrays(train_data, train_label)
+gc.collect()
 print 'test manipulating:'
 # as per https://github.com/BVLC/caffe/pull/1196
 test_data = np.array(test_data, dtype=np.float32)
+print 'array'
 test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
+print 'contiguous'
 test_label = np.ascontiguousarray(test_label, dtype=np.float32)
+gc.collect()
 
+print 'set'
 net_2 = solver.test_nets[0]
 net_2.set_input_arrays(test_data, test_label)
 
