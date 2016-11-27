@@ -21,4 +21,18 @@ def write_to_lmdb(image_list, db_path, h5_root):
 
         txn.commit()
     env.close()
-    print " ".join(["Writing to", db_path, "done!"])    
+    print " ".join(["Writing to", db_path, "done!"])
+
+
+
+label_root = '/work/04035/dnelson8/maverick/vr_project/dataset/ucfTrainTestlist'
+h5_root = '/work/04035/dnelson8/maverick/vr_project/dataset/UCF-101-extract'
+split = 1
+db_root = '/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/' + str(split)
+
+train_list, test_list = get_caffe_data.get_train_test_lists(label_root, split)
+TEST_CAP = 200
+write_to_lmdb(train_list[:TEST_CAP], os.path.join(db_root, 'train'), h5_root)
+write_to_lmdb(test_list[:TEST_CAP], os.path.join(db_root, 'test'), h5_root)
+
+
