@@ -10,7 +10,7 @@ layer{
 
     # batching, 100 for now
    memory_data_param{
-       batch_size: 100
+       batch_size: 10
        channels: 1
        height: 150
        width: 4096
@@ -28,7 +28,7 @@ layer{
     }
     # batching, 100 for now
    memory_data_param{
-       batch_size: 100
+       batch_size: 10
        channels: 1
        height: 150
        width: 4096
