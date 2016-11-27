@@ -23,7 +23,7 @@ counter = 0
 train_list, test_list = get_caffe_data.get_train_test_lists(label_root, split)
 print 'loading:'
 TRUNCATE_FOR_TESTING = 300
-train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_data_labels(train_list[:300], test_list[:300], h5_root)
+train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_data_labels(train_list[:9500] , test_list[:3600], h5_root)
 
 # code to get train_data in the proper shape:
 train_data = np.array(train_data, dtype=np.float32)
