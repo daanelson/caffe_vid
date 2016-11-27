@@ -40,7 +40,8 @@ def load_h5_file(file_path):
             data = f.get('data')
             np_data = np.array(data)
             f.close()
-        return np_data
+        to_return = np.copy(np_data[:150, :])
+        return to_return
     except IOError:
         print file_path
         return np.zeros(300)

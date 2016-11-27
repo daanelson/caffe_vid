@@ -12,7 +12,7 @@ layer{
    memory_data_param{
        batch_size: 100
        channels: 1
-       height: 300
+       height: 150
        width: 4096
    }
 }
@@ -30,11 +30,11 @@ layer{
    memory_data_param{
        batch_size: 100
        channels: 1
-       height: 300
+       height: 150
        width: 4096
    }
 }
-# input(10 * 1 * 300 * 4096)
+# input(10 * 1 * 150 * 4096)
 layer {
     name: "conv1"
     type: "Convolution"
@@ -58,7 +58,7 @@ layer {
     }
 }
 # output(n_batch * num_output * 300 - num_output * 1)
-# presently(10 * 400 * 293 * 1)
+# presently(10 * 400 * 143 * 1)
 # in this layer, set kernel_h = 300 - [conv1]num_output
 layer {
     name: "pool1"
@@ -67,7 +67,7 @@ layer {
     top: "pool1"
     pooling_param {
         pool: MAX
-        kernel_h: 293
+        kernel_h: 143
         kernel_w: 1
         stride: 1
     }
