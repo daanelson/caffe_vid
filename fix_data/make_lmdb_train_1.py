@@ -15,13 +15,12 @@ def write_to_lmdb(image_list, db_path, h5_root):
         for idx, image in enumerate(image_list):
             # 150 GB
             X = get_caffe_data.load_h5_file(os.path.join(h5_root, image[0]))
-            X = np.asarray(X[np.newaxis,:,:], dtype=np.float32)
-            y = image[1]
+            X = X[np.newaxis,:,:]
+            y = int(image[1])
             datum = array_to_datum(X, y)
             str_id = '{:08}'.format(idx)
             txn.put(str_id.encode('ascii'), datum.SerializeToString())
 
-        txn.commit()
     env.close()
     print " ".join(["Writing to", db_path, "done!"])
 

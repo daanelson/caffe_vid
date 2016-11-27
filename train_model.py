@@ -21,7 +21,7 @@ solver = caffe.SGDSolver(model_solver)
 # manually load data for now b/c why not
 counter = 0
 
-train_list, test_list = get_caffe_data.get_train_test_lists(label_root, split)
+'''train_list, test_list = get_caffe_data.get_train_test_lists(label_root, split)
 print 'loading:'
 TRUNCATE_FOR_TESTING = 300
 train_data, train_label, test_data, test_label = get_caffe_data.get_train_test_data_labels(train_list[:9500], test_list[:3600], h5_root)
@@ -49,7 +49,7 @@ gc.collect()
 print 'set'
 net_2 = solver.test_nets[0]
 net_2.set_input_arrays(test_data, test_label)
-
+'''
 # solving:
 solver.solve()
 

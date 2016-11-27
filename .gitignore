@@ -1,3 +1,5 @@
+dannet*
+*.o
 *.pyc
 test_data.py
 mnist/*
