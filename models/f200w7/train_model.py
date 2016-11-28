@@ -1,7 +1,6 @@
 import caffe
 import os
 import numpy as np
-import get_caffe_data
 import gc
 
 #this may switch to CPU, unsure
