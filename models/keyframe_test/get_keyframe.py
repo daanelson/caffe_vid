@@ -4,7 +4,7 @@ import os
 import h5py
 import sys
 import get_caffe_data
-
+import pdb
 
 caffe.set_mode_gpu()
 caffe_root = '/work/04035/dnelson8/maverick/caffe'
@@ -30,12 +30,14 @@ cur_start = 0
 cur_finish = 10
 increment = 10
 
+net.blobs['data'].reshape(10,1,150,4096)
+
 while cur_finish < len(test_list):
     test_data = [get_caffe_data.load_h5_file(os.path.join(h5_root, val[0])) for val in test_list[cur_start:cur_finish]]
     test_data = np.array(test_data, dtype=np.float32)
     test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
 
-    net.blobs['data'].data = test_data
+    net.blobs['data'].data[:,:,:,:] = test_data
     net.forward()
     pdb.set_trace()
     net.blobs['conv1'].data.argmax()
