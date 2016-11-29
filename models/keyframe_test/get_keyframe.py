@@ -4,6 +4,8 @@ import os
 import h5py
 import sys
 import get_caffe_data
+from collections import Counter
+import pickle
 
 
 caffe.set_mode_gpu()
@@ -26,19 +28,45 @@ net = caffe.Net(model_prototxt, model_weights, caffe.TEST)
 split = 1
 _, test_list = get_caffe_data.get_train_test_lists(label_root, split)
 
+#REMOVE TO WORK:
+test_list = test_list[:35]
+
 cur_start = 0
 cur_finish = 10
 increment = 10
+frames = []
 
 while cur_finish < len(test_list):
-    test_data = [get_caffe_data.load_h5_file(os.path.join(h5_root, val[0])) for val in test_list[cur_start:cur_finish]]
+    cur_list = test_list[cur_start:cur_finish]
+    test_data = [get_caffe_data.load_h5_file(os.path.join(h5_root, val[0])) for val in cur_list]
     test_data = np.array(test_data, dtype=np.float32)
     test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
 
     net.blobs['data'].data = test_data
     net.forward()
-    pdb.set_trace()
-    net.blobs['conv1'].data.argmax()
+    argmax_vals = net.blobs['conv1'].data.argmax(2)
+    for val in range(10):
+        cur_counter = Counter(argmax_vals[val,:,0])
+        best_frame = cur_counter.most_common(1)[0][0]
+        frames.append(best_frame)
 
     cur_start += increment
     cur_finish += increment
+
+final_list = test_list[cur_start:]
+test_data = [get_caffe_data.load_h5_file(os.path.join(h5_root, val[0])) for val in final_list]
+test_data = np.array(test_data, dtype=np.float32)
+test_data = np.ascontiguousarray(test_data[:,np.newaxis,:,:])
+
+net.blobs['data'].data = test_data
+net.forward()
+argmax_vals = net.blobs['conv1'].data.argmax(2)
+for val in range(len(final_list)):
+    cur_counter = Counter(argmax_vals[val,:,0])
+    best_frame = cur_counter.most_common(1)[0][0]
+    frames.append(best_frame)
+
+everything = zip(test_list, frames)
+
+with open('bestframes.txt', 'wb') as f:
+    pickle.dump(everything, f)
