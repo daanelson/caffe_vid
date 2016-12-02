@@ -1,4 +1,4 @@
-net: "train_net.prototxt"
+net: "train_net1.prototxt"
 
 base_lr: 0.001
 lr_policy: "step"       # step down by factor of gamma every "stepsize" iterations

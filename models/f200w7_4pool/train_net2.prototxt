@@ -9,7 +9,7 @@ layer{
     }
     # batching, 100 for now
     data_param{
-       source: "/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/1/train"
+       source: "/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/2/train"
        batch_size: 100
        backend: LMDB
    }
@@ -26,7 +26,7 @@ layer{
     }
     # batching, 100 for now
    data_param{
-       source: "/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/1/test"
+       source: "/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/2/test"
        batch_size: 100
        backend: LMDB
    }
@@ -64,52 +64,18 @@ layer {
     top: "pool1"
     pooling_param {
         pool: MAX
-        kernel_h: 143
+        kernel_h: 35
         kernel_w: 1
-        stride: 1
+        stride: 35
     }
 }
-# output: (n_batch * num_output * 1 * 1)
-# presently: (10 * 200 * 1 * 1)
+# output: (n_batch * num_output * 4 * 1)
+# presently: (10 * 200 * 4 * 1)
 layer {
     name: "fc1"
     type: "InnerProduct"
     bottom: "pool1"
     top: "fc1"
-    inner_product_param {
-        num_output: 200
-        weight_filler {
-            type: "gaussian"
-            std: 0.01
-        }
-        bias_filler {
-            type: "constant"
-            value: 0
-        }
-    }
-}
-layer {
-    name: "relu1"
-    type: "ReLU"
-    bottom: "fc1"
-    top: "fc1"
-}
-layer {
-    name: "drop1"
-    type: "Dropout"
-    bottom: "fc1"
-    top: "fc1"
-    dropout_param {
-        dropout_ratio: 0.5
-    }
-}
-# output (n_batch * n_output * 1 * 1)
-# presently (10 * 200 * 1 * 1)
-layer {
-    name: "fc2"
-    type: "InnerProduct"
-    bottom: "fc1"
-    top: "fc2"
     inner_product_param {
         num_output: 101
         weight_filler {
