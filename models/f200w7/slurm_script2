@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH -J frame_200_2          # job name
+#SBATCH -o frame_200_2.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -n 1              # total number of mpi tasks requested
+#SBATCH -t 02:00:00        # run time (hh:mm:ss) - 1 hours
+#SBATCH -p gpu              # queue (partition) -- normal, development, etc.
+#SBATCH -A CS381V-Visual-Recogn
+#SBATCH --mail-user=dnelson@utexas.edu
+#SBATCH --mail-type=begin  # email me when the job starts
+#SBATCH --mail-type=end    # email me when the job finishes
+
+module load cuda/7.0
+
+python /work/04035/dnelson8/maverick/vr_project/caffe_vid/models/f200w7/train_model.py 2
