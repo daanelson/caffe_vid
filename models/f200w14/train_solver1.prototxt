@@ -1,0 +1,23 @@
+net: "train_net1.prototxt"
+
+base_lr: 0.001
+lr_policy: "step"       # step down by factor of gamma every "stepsize" iterations
+gamma: 0.1
+stepsize: 1000
+max_iter: 2000
+momentum: 0.9
+
+# display every n iterations - 100 for testing
+display: 100
+
+# save a version of the model every "snapshot" iterations
+snapshot: 2000
+
+# test information - iter is num batches, interval is how often we test
+# 37 should give us a full test at each test interval
+test_iter: 36
+test_interval: 100
+
+# change obvi depending on where you're running
+solver_mode: GPU
+snapshot_prefix: "model/dannet"
