@@ -2,18 +2,19 @@ import caffe
 import os
 import numpy as np
 import gc
+import sys
 
 #this may switch to CPU, unsure
 #caffe.set_device(0)
 caffe.set_mode_gpu()
 caffe_root = '/work/04035/dnelson8/maverick/caffe'
 model_root = '/work/04035/dnelson8/maverick/vr_project/caffe_vid/models/f200w7_4pool'
-model_prototxt = os.path.join(model_root, 'train_net.prototxt')
-model_solver = os.path.join(model_root, 'train_solver.prototxt')
+model_prototxt = os.path.join(model_root, 'train_net{0}.prototxt'.format(sys.argv[1]))
+model_solver = os.path.join(model_root, 'train_solver{0}.prototxt'.format(sys.argv[1]))
 
 label_root = '/work/04035/dnelson8/maverick/vr_project/dataset/ucfTrainTestlist'
 h5_root = '/work/04035/dnelson8/maverick/vr_project/dataset/UCF-101-extract'
-split = 1
+split = int(sys.argv[1])
 
 solver = caffe.SGDSolver(model_solver)
 

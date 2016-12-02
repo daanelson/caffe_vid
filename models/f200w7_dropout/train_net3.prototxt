@@ -1,0 +1,143 @@
+layer{
+    name: "input"
+    type: "Data"
+    # note - this is I guess just a convention that the top layers are "data and label"
+    top: "data"
+    top: "label"
+    include {
+        phase: TRAIN
+    }
+    # batching, 100 for now
+    data_param{
+       source: "/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/3/train"
+       batch_size: 100
+       backend: LMDB
+   }
+}
+
+layer{
+    name: "input"
+    type: "Data"
+    # note - this is I guess just a convention that the top layers are "data and label"
+    top: "data"
+    top: "label"
+    include {
+        phase: TEST
+    }
+    # batching, 100 for now
+   data_param{
+       source: "/work/04035/dnelson8/maverick/vr_project/dataset/lmdb/3/test"
+       batch_size: 100
+       backend: LMDB
+   }
+}
+# input(10 * 1 * 150 * 4096)
+layer {
+    name: "conv1"
+    type: "Convolution"
+    bottom: "data"
+    top: "conv1"
+    convolution_param {
+        # num_output = number of filters
+        num_output: 200
+        kernel_h: 7
+        kernel_w: 4096
+        stride_h: 1
+        stride_w: 1
+        weight_filler {
+            type: "gaussian"
+            std: 0.02
+        }
+        bias_filler {
+            type: "gaussian"
+            std: 0.001
+        }
+    }
+}
+# output(n_batch * num_output * 300 - num_output * 1)
+# presently(10 * 800 * 143 * 1)
+# in this layer, set kernel_h = 300 - [conv1]num_output
+layer {
+    name: "pool1"
+    type: "Pooling"
+    bottom: "conv1"
+    top: "pool1"
+    pooling_param {
+        pool: MAX
+        kernel_h: 143
+        kernel_w: 1
+        stride: 1
+    }
+}
+# output: (n_batch * num_output * 1 * 1)
+# presently: (10 * 200 * 1 * 1)
+layer {
+    name: "fc1"
+    type: "InnerProduct"
+    bottom: "pool1"
+    top: "fc1"
+    inner_product_param {
+        num_output: 200
+        weight_filler {
+            type: "gaussian"
+            std: 0.01
+        }
+        bias_filler {
+            type: "constant"
+            value: 0
+        }
+    }
+}
+layer {
+    name: "relu1"
+    type: "ReLU"
+    bottom: "fc1"
+    top: "fc1"
+}
+layer {
+    name: "drop1"
+    type: "Dropout"
+    bottom: "fc1"
+    top: "fc1"
+    dropout_param {
+        dropout_ratio: 0.5
+    }
+}
+# output (n_batch * n_output * 1 * 1)
+# presently (10 * 200 * 1 * 1)
+layer {
+    name: "fc2"
+    type: "InnerProduct"
+    bottom: "fc1"
+    top: "fc2"
+    inner_product_param {
+        num_output: 101
+        weight_filler {
+            type: "gaussian"
+            std: 0.01
+        }
+        bias_filler {
+            type: "constant"
+            value: 0
+        }
+    }
+}
+# output: (n_batch * num_output * 1 * 1)
+# presently: (10 * 400 * 1 * 1)
+layer {
+    name: "accuracy"
+    type: "Accuracy"
+    bottom: "fc1"
+    bottom: "label"
+    top: "accuracy"
+    include {
+        phase: TEST
+    }
+}
+layer {
+    name: "softmax"
+    type: "SoftmaxWithLoss"
+    bottom: "fc1"
+    bottom: "label"
+    top: "softmax"
+}

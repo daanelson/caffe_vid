@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J dannet_7frame_200_fil1           # job name
-#SBATCH -o dannet_7frame_200_2kit1.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J dannetf200w7dropout_fil3           # job name
+#SBATCH -o dannetf200w7dropout3.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -t 02:00:00        # run time (hh:mm:ss) - 1 hours
 #SBATCH -p gpu              # queue (partition) -- normal, development, etc.
@@ -11,4 +11,4 @@
 
 module load cuda/7.0
 
-python /work/04035/dnelson8/maverick/vr_project/caffe_vid/models/f200w7_4pool/train_model.py 1
+python /work/04035/dnelson8/maverick/vr_project/caffe_vid/models/f200w7_dropout/train_model.py 3
